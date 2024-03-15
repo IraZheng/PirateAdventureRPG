@@ -16,7 +16,7 @@ island_map = [["Tree", "Trap", "Camp", "Treasure"],
 Player = {"posX": 0, "posY": 1, "inventory": 
           {"coconuts": 0, "hasShovel": False, "hasKey": False}}
 #movement options
-movement = "-Move north \n-Move south \n-Move east \n-Move west \n"
+movement = "-Move north \n-Move south \n-Move east \n-Move west"
 #encounters on the island
 Encounters = {"Camp": {"Description": "Camp description", 
                        "Actions": "Camp actions"}, 
@@ -38,25 +38,29 @@ Encounters = {"Camp": {"Description": "Camp description",
 
 
 # Functions -------------------------------------------------------------------
-def mapMove(choice):
+def mapMove():
     global Player
+    #prints movement variable
+    print(movement)
+    #default input is a string so I can use .lower()
+    moveChoice = input("Which direction do you move? \n-").lower()
     #for map movement
-    if choice == "north":
+    if moveChoice == "north":
         if Player["posY"] > 0:
             Player["posY"] -= 1
         else:
             print("Thats the end of the island, you can't go there!")
-    elif choice == "south":
+    elif moveChoice == "south":
         if Player["posY"] < (len(island_map) - 1):
             Player["posY"] += 1
         else:
             print("Thats the end of the island, you can't go there!")
-    elif choice == "east":
+    elif moveChoice == "east":
         if Player["posX"] < (len(island_map[Player["posY"]]) - 1):
             Player["posX"] += 1
         else:
             print("Thats the end of the island, you can't go there!")
-    elif choice == "west":
+    elif moveChoice == "west":
         if Player["posX"] > 0:
             Player["posX"] -= 1
         else:
@@ -66,12 +70,12 @@ def mapMove(choice):
 def mainMenu():
     while True:
         player_location = island_map[Player["posY"]][Player["posX"]]
-        actions = movement + Encounters[player_location]["Actions"]
         print(Encounters[player_location]["Description"])
-        print(actions)
+        print(Encounters[player_location]["Actions"])
+        print("-Move")
         choice = input("What do you do? \n-")
-        if choice in ["north", "south", "east", "west"]:
-            mapMove(choice)
+        if choice == "Move":
+            mapMove()
 
 
 # Main ------------------------------------------------------------------------
