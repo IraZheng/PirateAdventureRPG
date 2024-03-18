@@ -5,7 +5,7 @@
 #Coder: Ira Zheng
 #Version: 1.0
 ###############################################################################
-'''Explain Program Here'''
+'''A pirate adventure game?'''
 ###############################################################################
 # Imports and Global Variables ------------------------------------------------
 #map of the island
@@ -18,19 +18,20 @@ Player = {"posX": 0, "posY": 1, "inventory":
 #movement options
 movement = "-Move north \n-Move south \n-Move east \n-Move west"
 #encounters on the island
-Encounters = {"Camp": {"Description": "Camp description", 
+Encounters = {"Camp": {"Description": "You have entered a pirate camp", 
                        "Actions": "-Camp actions"}, 
-              "Key": {"Description": "Key description", 
+              "Key": {"Description": "Something shiny catches your eye\n" +
+                      "After closer inspection, you find that it's a key", 
                       "Actions": "-Pick up the key"}, 
-              "Patrol": {"Description": "Patrol description", 
+              "Patrol": {"Description": "You encounter patrolling pirates", 
                          "Actions": "-Patrol actions"}, 
-              "Shovel": {"Description": "Shovel description", 
+              "Shovel": {"Description": "You find a shovel on the ground", 
                          "Actions": "-Pick up the shovel"}, 
-              "Start": {"Description": "Start description", 
+              "Start": {"Description": "This is where you washed up", 
                         "Actions": "-Start actions"}, 
-              "Trap": {"Description": "Trap description", 
+              "Trap": {"Description": "You fall into a pit full of spikes", 
                        "Actions": "-Trap Actions"}, 
-              "Treasure": {"Description": "Treasure description", 
+              "Treasure": {"Description": "On the ground is a big red X", 
                            "Actions": "-Treasure actions"},
               "Tree": {"Description": "On the sandy shore, " + 
                        "you spot a coconut tree", 
@@ -84,12 +85,18 @@ def mainMenu():
     """Main menu, this will probably do more later so this 
     is a placeholder docstring
     """
+    #prints an introduction
+    print("After a massive hurricane, you are seperated from your crew")
+    print("You wash up on a pirate infested island")
+    print("You realise that there is treasure on the island and " + 
+          "decide to steal it")
     while True:
-        player_location = island_map[Player["posY"]][Player["posX"]]
-        print(Encounters[player_location]["Description"])
-        print(Encounters[player_location]["Actions"])
+        playerLocation = island_map[Player["posY"]][Player["posX"]]
+        print(Encounters[playerLocation]["Description"])
+        print("What do you do?")
+        print(Encounters[playerLocation]["Actions"])
         print("-Move")
-        choice = input("What do you do? \n-").lower()
+        choice = input("-").lower()
         if choice == "move":
             print("Okay!\n")
             mapMove()
