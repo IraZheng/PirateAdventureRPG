@@ -9,7 +9,7 @@
 ###############################################################################
 # Imports and Global Variables ------------------------------------------------
 #map of the island
-island_map = [["Tree", "Trap", "Camp", "Treasure"],
+islandMap = [["Tree", "Trap", "Camp", "Treasure"],
              ["Start", "Patrol", "Shovel", "Camp"],
              ["Patrol", "Trap", "Camp", "Key"]]
 #x is column y is row on island_map
@@ -58,13 +58,13 @@ def mapMove():
             else:
                 print("Thats the end of the island, you can't go there!\n")
         elif moveChoice == "south":
-            if Player["posY"] < (len(island_map) - 1):
+            if Player["posY"] < (len(islandMap) - 1):
                 Player["posY"] += 1
                 break
             else:
                 print("Thats the end of the island, you can't go there!\n")
         elif moveChoice == "east":
-            if Player["posX"] < (len(island_map[Player["posY"]]) - 1):
+            if Player["posX"] < (len(islandMap[Player["posY"]]) - 1):
                 Player["posX"] += 1
                 break
             else:
@@ -91,7 +91,7 @@ def mainMenu():
     print("You realise that there is treasure on the island and " + 
           "decide to steal it")
     while True:
-        playerLocation = island_map[Player["posY"]][Player["posX"]]
+        playerLocation = islandMap[Player["posY"]][Player["posX"]]
         print(Encounters[playerLocation]["Description"])
         print("What do you do?")
         print(Encounters[playerLocation]["Actions"])
