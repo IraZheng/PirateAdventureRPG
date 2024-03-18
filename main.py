@@ -95,13 +95,17 @@ def mainMenu():
         print(Encounters[playerLocation]["Description"])
         print("What do you do?")
         print(Encounters[playerLocation]["Actions"])
-        print("-Move")
+        print("-Move\n-Quit")
+        #takes user's choice
         choice = input("-").lower()
         if choice == "move":
             print("Okay!\n")
             mapMove()
         #elif choice in Encounters[player_location]["Actions"]:
             #encounterActions()
+        elif choice == "quit":
+            print("You have quit your adventure")
+            break
         else:
             print("That's not a valid option!\n")
 
