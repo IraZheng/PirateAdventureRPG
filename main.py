@@ -8,6 +8,9 @@
 '''A pirate adventure game?'''
 ###############################################################################
 # Imports and Global Variables ------------------------------------------------
+#for map table
+from tabulate import tabulate
+
 #map of the island
 islandMap = [["Tree", "Trap", "Camp", "Treasure"],
              ["Start", "Patrol", "Shovel", "Camp"],
@@ -37,9 +40,37 @@ Encounters = {"Camp": {"Description": "You have entered a pirate camp",
                        "you spot a coconut tree", 
                        "Actions": "-Pick a coconut"}
              }
+#map export file
+mapFile = 'map.txt'
 
 
 # Functions -------------------------------------------------------------------
+def mapExport():
+    '''Exports the map to an external file'''
+    try:
+        with open(mapFile, "w") as file:
+            file.write(tabulate(islandMap, tablefmt = "fancy_grid"))
+    except:
+        print("Unable to export map")
+    else:
+        print("You have a map")
+    finally:
+        print("Maybe that will help")
+
+
+def viewMap():
+    '''Prints the map from an external file'''
+    try:
+        with open(mapFile, "r") as file:
+            print(file.read())
+    except:
+        print("Unable to read map")
+    else:
+        print("Nice map")
+    finally:
+        print("Maybe that will help")
+
+
 def mapMove():
     """Allows players to move through the map"""
     global Player
@@ -82,27 +113,23 @@ def mapMove():
 
 
 def mainMenu():
-    """Main menu, this will probably do more later so this 
+    """
+    Main menu, this will probably do more later so this 
     is a placeholder docstring
     """
-    #prints an introduction
-    print("After a massive hurricane, you are seperated from your crew")
-    print("You wash up on a pirate infested island")
-    print("You realise that there is treasure on the island and " + 
-          "decide to steal it")
     while True:
         playerLocation = islandMap[Player["posY"]][Player["posX"]]
         print(Encounters[playerLocation]["Description"])
         print("What do you do?")
         print(Encounters[playerLocation]["Actions"])
-        print("-Move\n-Quit")
+        print("-Move\n-Map\n-Quit")
         #takes user's choice
         choice = input("-").lower()
         if choice == "move":
             print("Okay!\n")
             mapMove()
-        #elif choice in Encounters[player_location]["Actions"]:
-            #encounterActions()
+        elif choice == "map":
+            viewMap()
         elif choice == "quit":
             print("You have quit your adventure")
             break
@@ -110,5 +137,15 @@ def mainMenu():
             print("That's not a valid option!\n")
 
 
+def intro():
+    '''prints an intro'''
+    print("After a massive hurricane, you are seperated from your crew")
+    print("You wash up on a pirate infested island")
+    print("You realise that there is treasure on the island and " + 
+          "decide to steal it")
+
+
 # Main ------------------------------------------------------------------------
+intro()
+mapExport()
 mainMenu()
