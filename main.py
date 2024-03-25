@@ -22,24 +22,27 @@ Player = {"posX": 0, "posY": 1, "inventory":
 movement = "-Move north \n-Move south \n-Move east \n-Move west"
 #encounters on the island
 Encounters = {"Camp": {"Description": "You have entered a pirate camp", 
-                       "Actions": "-Camp actions"}, 
-              "Key": {"Description": "Something shiny catches your eye\n" +
+                       "Actions": ["Fight the pirates"]}, 
+              "Key": {"Description": "Something shiny catches your eye\n" + 
                       "After closer inspection, you find that it's a key", 
-                      "Actions": "-Pick up the key"}, 
+                      "Actions": ["Pick up the key"]}, 
               "Patrol": {"Description": "You encounter patrolling pirates", 
-                         "Actions": "-Patrol actions"}, 
+                         "Actions": ["Fight the pirates"]}, 
               "Shovel": {"Description": "You find a shovel on the ground", 
-                         "Actions": "-Pick up the shovel"}, 
+                         "Actions": ["Pick up the shovel"]}, 
               "Start": {"Description": "This is where you washed up", 
-                        "Actions": "-Start actions"}, 
+                        "Actions": ["Start actions"]}, 
               "Trap": {"Description": "You fall into a pit full of spikes", 
-                       "Actions": "-Trap Actions"}, 
+                       "Actions": ["Disable trap"]}, 
               "Treasure": {"Description": "On the ground is a big red X", 
-                           "Actions": "-Treasure actions"},
+                           "Actions": ["Dig", "Unlock"]},
               "Tree": {"Description": "On the sandy shore, " + 
                        "you spot a coconut tree", 
-                       "Actions": "-Pick a coconut"}
+                       "Actions": ["Pick a coconut"]}
              }
+#booleans for treasure room
+hasDug = False
+hasUnlocked = False
 #map export file
 mapFile = 'map.txt'
 
@@ -112,6 +115,61 @@ def mapMove():
             print('Please choose "north", "south", "east", "west" or "back"\n')
 
 
+def encounterActions(action, room):
+    '''lets the player do different things in different encounters'''
+    global Player
+    global hasDug
+    global hasUnlocked
+    #print("Passed the check")
+    #print(room)
+    #print(action)
+    if room == "Camp":
+        if action == "fight the pirates":
+            print("You beat the pirates")
+    elif room == "Key":
+        if action == "pick up the key":
+            Player["inventory"]["hasKey"] = True
+            print("You have picked up the key")
+    elif room == "Patrol":
+        if action == "fight the pirates":
+            print("You beat the pirates")
+    elif room == "Shovel":
+        if action == "pick up the shovel":
+            Player["inventory"]["hasShovel"] = True
+            print("You have picked up the shovel")
+    elif room == "Start":
+        pass
+    elif room == "Trap":
+        if action == "disable trap":
+            print("Trap disabled!")
+    elif room == "Treasure":
+        if action == "dig":
+            if not hasDug:
+                if Player["inventory"]["hasShovel"]:
+                    print("You have dug up the treasure")
+                    hasDug = True
+                else:
+                    print("You do not have a shovel")
+            else:
+                print("You have already dug up the treasure")
+        elif action == "unlock":
+            if hasDug:
+                if not hasUnlocked:
+                    if Player["inventory"]["hasKey"]:
+                        print("You have unlocked up the treasure")
+                        hasUnlocked = True
+                    else:
+                        print("You do not have a key")
+                else:
+                    print("You have already unlocked the treasure")
+            else:
+                print("You have not dug up the treasure yet")
+    elif room == "Tree":
+        if action == "pick a coconut":
+            Player["inventory"]["coconuts"] += 1
+            print(f'You have {Player["inventory"]["coconuts"]} coconuts')
+
+
 def mainMenu():
     """
     Main menu, this will probably do more later so this 
@@ -121,13 +179,16 @@ def mainMenu():
         playerLocation = islandMap[Player["posY"]][Player["posX"]]
         print(Encounters[playerLocation]["Description"])
         print("What do you do?")
-        print(Encounters[playerLocation]["Actions"])
+        for action in Encounters[playerLocation]["Actions"]:
+            print(f"-{action}")
         print("-Move\n-Map\n-Quit")
         #takes user's choice
         choice = input("-").lower()
         if choice == "move":
             print("Okay!\n")
             mapMove()
+        elif choice.capitalize() in Encounters[playerLocation]["Actions"]:
+            encounterActions(choice, playerLocation)
         elif choice == "map":
             viewMap()
         elif choice == "quit":
