@@ -8,6 +8,7 @@
 '''A pirate adventure game?'''
 ###############################################################################
 # Imports and Global Variables ------------------------------------------------
+#cool edit 
 #for map table
 from tabulate import tabulate
 
