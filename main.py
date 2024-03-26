@@ -23,23 +23,32 @@ Player = {"posX": 0, "posY": 1, "inventory":
 movement = "-Move north \n-Move south \n-Move east \n-Move west"
 #encounters on the island
 Encounters = {"Camp": {"Description": "You have entered a pirate camp", 
-                       "Actions": ["Fight the pirates"]}, 
+                       "Actions": ["Fight the pirates"], 
+                       "Completed1": False}, 
               "Key": {"Description": "Something shiny catches your eye\n" + 
                       "After closer inspection, you find that it's a key", 
-                      "Actions": ["Pick up the key"]}, 
+                      "Actions": ["Pick up the key"], 
+                      "Completed1": False}, 
               "Patrol": {"Description": "You encounter patrolling pirates", 
-                         "Actions": ["Fight the pirates"]}, 
+                         "Actions": ["Fight the pirates"], 
+                         "Completed1": False}, 
               "Shovel": {"Description": "You find a shovel on the ground", 
-                         "Actions": ["Pick up the shovel"]}, 
+                         "Actions": ["Pick up the shovel"], 
+                        "Completed1": False}, 
               "Start": {"Description": "This is where you washed up", 
-                        "Actions": ["Start actions"]}, 
+                        "Actions": ["Start actions"], 
+                        "Completed1": False}, 
               "Trap": {"Description": "You fall into a pit full of spikes", 
-                       "Actions": ["Disable trap"]}, 
+                       "Actions": ["Disable trap"], 
+                       "Completed1": False}, 
               "Treasure": {"Description": "On the ground is a big red X", 
-                           "Actions": ["Dig", "Unlock"]},
+                           "Actions": ["Dig", "Unlock"], 
+                           "Completed1": False, 
+                           "Completed2": False},
               "Tree": {"Description": "On the sandy shore, " + 
                        "you spot a coconut tree", 
-                       "Actions": ["Pick a coconut"]}
+                       "Actions": ["Pick a coconut"], 
+                       "Completed1": False}
              }
 #booleans for treasure room
 hasDug = False
@@ -181,7 +190,9 @@ def mainMenu():
         print(Encounters[playerLocation]["Description"])
         print("What do you do?")
         for action in Encounters[playerLocation]["Actions"]:
-            print(f"-{action}")
+            if (not Encounters[playerLocation]
+                [f'Completed{len(Encounters[playerLocation]["Actions"])}']):
+                print(f"-{action}")
         print("-Inventory\n-Move\n-Map\n-Quit")
         #takes user's choice
         choice = input("-").lower()
