@@ -182,7 +182,7 @@ def mainMenu():
         print("What do you do?")
         for action in Encounters[playerLocation]["Actions"]:
             print(f"-{action}")
-        print("-Move\n-Map\n-Quit")
+        print("-Inventory\n-Move\n-Map\n-Quit")
         #takes user's choice
         choice = input("-").lower()
         if choice == "move":
@@ -190,6 +190,17 @@ def mainMenu():
             mapMove()
         elif choice.capitalize() in Encounters[playerLocation]["Actions"]:
             encounterActions(choice, playerLocation)
+        elif choice == "inventory":
+            print("In your inventory, you have:")
+            print(f'-{Player["inventory"]["coconuts"]} coconuts')
+            if Player["inventory"]["hasShovel"]:
+                print("-A shovel")
+            else:
+                print("-No shovel")
+            if Player["inventory"]["hasKey"]:
+                print("-A key")
+            else:
+                print("-No key")
         elif choice == "map":
             viewMap()
         elif choice == "quit":
