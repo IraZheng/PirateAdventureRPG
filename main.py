@@ -194,10 +194,9 @@ def mainMenu():
         playerLocation = islandMap[Player["posY"]][Player["posX"]]
         print(Encounters[playerLocation]["Description"])
         print("What do you do?")
-        for action in Encounters[playerLocation]["Actions"]:
-            if (not Encounters[playerLocation]
-                [f'Completed{len(Encounters[playerLocation]["Actions"])}']):
-                print(f"-{action}")
+        for action in range(len(Encounters[playerLocation]["Actions"])):
+            if (not Encounters[playerLocation][f'Completed{action + 1}']):
+                print(f'-{Encounters[playerLocation]["Actions"][action]}')
         print("-Inventory\n-Move\n-Map\n-Quit")
         #takes user's choice
         choice = input("-").lower()
