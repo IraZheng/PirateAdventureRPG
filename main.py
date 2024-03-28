@@ -22,36 +22,36 @@ Player = {"posX": 0, "posY": 1, "inventory":
 #movement options
 movement = "-Move north \n-Move south \n-Move east \n-Move west"
 #encounters on the island
-Encounters = {"Camp": {"Description": "You have entered a pirate camp", 
+Encounters = {"Camp": {"Description": "\nYou have entered a pirate camp", 
                        "Actions": ["Fight the pirates"], 
                        "Completed1": False}, 
-              "Key": {"Description": "Something shiny catches your eye\n" + 
+              "Key": {"Description": "\nSomething shiny catches your eye\n" + 
                       "After closer inspection, you find that it's a key", 
                       "Actions": ["Pick up the key"], 
                       "Completed1": False}, 
-              "Patrol": {"Description": "You encounter patrolling pirates", 
+              "Patrol": {"Description": "\nYou encounter patrolling pirates", 
                          "Actions": ["Fight the pirates"], 
                          "Completed1": False}, 
-              "Shovel": {"Description": "You find a shovel on the ground", 
+              "Shovel": {"Description": "\nYou find a shovel on the ground", 
                          "Actions": ["Pick up the shovel"], 
                         "Completed1": False}, 
-              "Start": {"Description": "This is where you washed up", 
+              "Start": {"Description": "\nThis is where you washed up", 
                         "Actions": ["Start actions"], 
                         "Completed1": False}, 
-              "Trap": {"Description": "You fall into a pit full of spikes", 
+              "Trap": {"Description": "\nYou fall into a pit full of spikes", 
                        "Actions": ["Disable trap"], 
                        "Completed1": False}, 
-              "Treasure": {"Description": "On the ground is a big red X", 
+              "Treasure": {"Description": "\nOn the ground is a big red X", 
                            "Actions": ["Dig", "Unlock"], 
                            "Completed1": False, 
                            "Completed2": False},
-              "Tree": {"Description": "On the sandy shore, " + 
+              "Tree": {"Description": "\nOn the sandy shore, " + 
                        "you spot a coconut tree", 
                        "Actions": ["Pick a coconut"], 
                        "Completed1": False}
              }
 #booleans for treasure room
-hasDug = False
+
 hasUnlocked = False
 #map export file
 mapFile = 'map.txt'
@@ -128,8 +128,7 @@ def mapMove():
 def encounterActions(action, room):
     '''lets the player do different things in different encounters'''
     global Player
-    global hasDug
-    global hasUnlocked
+    global Encounters
     #print("Passed the check")
     #print(room)
     #print(action)
@@ -139,6 +138,8 @@ def encounterActions(action, room):
     elif room == "Key":
         if action == "pick up the key":
             Player["inventory"]["hasKey"] = True
+            #already picked up the key
+            Encounters["Key"]["Completed1"] = True
             print("You have picked up the key")
     elif room == "Patrol":
         if action == "fight the pirates":
@@ -146,6 +147,8 @@ def encounterActions(action, room):
     elif room == "Shovel":
         if action == "pick up the shovel":
             Player["inventory"]["hasShovel"] = True
+            #already picked up shovel
+            Encounters["Shovel"]["Completed1"] = True
             print("You have picked up the shovel")
     elif room == "Start":
         pass
@@ -154,20 +157,22 @@ def encounterActions(action, room):
             print("Trap disabled!")
     elif room == "Treasure":
         if action == "dig":
-            if not hasDug:
+            #Completed1 checks if you have already dug 
+            #Completed2 checks if you have already unlocked
+            if not Encounters["Treasure"]["Completed1"]:
                 if Player["inventory"]["hasShovel"]:
                     print("You have dug up the treasure")
-                    hasDug = True
+                    Encounters["Treasure"]["Completed1"] = True
                 else:
                     print("You do not have a shovel")
             else:
                 print("You have already dug up the treasure")
         elif action == "unlock":
-            if hasDug:
-                if not hasUnlocked:
+            if Encounters["Treasure"]["Completed1"]:
+                if not Encounters["Treasure"]["Completed2"]:
                     if Player["inventory"]["hasKey"]:
                         print("You have unlocked up the treasure")
-                        hasUnlocked = True
+                        Encounters["Treasure"]["Completed2"] = True
                     else:
                         print("You do not have a key")
                 else:
@@ -202,7 +207,7 @@ def mainMenu():
         elif choice.capitalize() in Encounters[playerLocation]["Actions"]:
             encounterActions(choice, playerLocation)
         elif choice == "inventory":
-            print("In your inventory, you have:")
+            print("\nIn your inventory, you have:")
             print(f'-{Player["inventory"]["coconuts"]} coconuts')
             if Player["inventory"]["hasShovel"]:
                 print("-A shovel")
@@ -215,10 +220,10 @@ def mainMenu():
         elif choice == "map":
             viewMap()
         elif choice == "quit":
-            print("You have quit your adventure")
+            print("\nYou have quit your adventure")
             break
         else:
-            print("That's not a valid option!\n")
+            print("That's not a valid option!")
 
 
 def intro():
