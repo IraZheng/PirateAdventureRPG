@@ -8,9 +8,8 @@
 '''A pirate adventure game?'''
 ###############################################################################
 # Imports and Global Variables ------------------------------------------------
-#cool edit no way
-#for map table
-from tabulate import tabulate
+#map.py module
+import map
 
 #map of the island
 islandMap = [["Tree", "Trap", "Camp", "Treasure"],
@@ -50,41 +49,10 @@ Encounters = {"Camp": {"Description": "\nYou have entered a pirate camp",
                        "Actions": ["Pick a coconut"], 
                        "Completed1": False}
              }
-#booleans for treasure room
-
-hasUnlocked = False
-#map export file
-mapFile = 'map.txt'
 
 
 # Functions -------------------------------------------------------------------
-def mapExport():
-    '''Exports the map to an external file'''
-    try:
-        with open(mapFile, "w") as file:
-            file.write(tabulate(islandMap, tablefmt = "fancy_grid"))
-    except:
-        print("Unable to export map")
-    else:
-        print("You have a map")
-    finally:
-        print("Maybe that will help")
-
-
-def viewMap():
-    '''Prints the map from an external file'''
-    try:
-        with open(mapFile, "r") as file:
-            print(file.read())
-    except:
-        print("Unable to read map")
-    else:
-        print("Nice map")
-    finally:
-        print("Maybe that will help")
-
-
-def mapMove():
+def move():
     """Allows players to move through the map"""
     global Player
     while True:
@@ -155,6 +123,7 @@ def encounterActions(action, room):
     elif room == "Trap":
         if action == "disable trap":
             print("Trap disabled!")
+            #how do I disable one trap without disabling the other?
     elif room == "Treasure":
         if action == "dig":
             #Completed1 checks if you have already dug 
@@ -171,7 +140,7 @@ def encounterActions(action, room):
             if Encounters["Treasure"]["Completed1"]:
                 if not Encounters["Treasure"]["Completed2"]:
                     if Player["inventory"]["hasKey"]:
-                        print("You have unlocked up the treasure")
+                        print("You have unlocked the treasure")
                         Encounters["Treasure"]["Completed2"] = True
                     else:
                         print("You do not have a key")
@@ -183,6 +152,20 @@ def encounterActions(action, room):
         if action == "pick a coconut":
             Player["inventory"]["coconuts"] += 1
             print(f'You have {Player["inventory"]["coconuts"]} coconuts')
+
+
+def printInv():
+    """prints player's inventory"""
+    print("\nIn your inventory, you have:")
+    print(f'-{Player["inventory"]["coconuts"]} coconuts')
+    if Player["inventory"]["hasShovel"]:
+        print("-A shovel")
+    else:
+        print("-No shovel")
+    if Player["inventory"]["hasKey"]:
+        print("-A key")
+    else:
+        print("-No key")
 
 
 def mainMenu():
@@ -202,22 +185,13 @@ def mainMenu():
         choice = input("-").lower()
         if choice == "move":
             print("Okay!\n")
-            mapMove()
+            move()
         elif choice.capitalize() in Encounters[playerLocation]["Actions"]:
             encounterActions(choice, playerLocation)
         elif choice == "inventory":
-            print("\nIn your inventory, you have:")
-            print(f'-{Player["inventory"]["coconuts"]} coconuts')
-            if Player["inventory"]["hasShovel"]:
-                print("-A shovel")
-            else:
-                print("-No shovel")
-            if Player["inventory"]["hasKey"]:
-                print("-A key")
-            else:
-                print("-No key")
+            printInv()
         elif choice == "map":
-            viewMap()
+            map.viewMap()
         elif choice == "quit":
             print("\nYou have quit your adventure")
             break
@@ -235,5 +209,5 @@ def intro():
 
 # Main ------------------------------------------------------------------------
 intro()
-mapExport()
+map.mapExport(islandMap)
 mainMenu()
