@@ -36,7 +36,7 @@ Encounters = {"Camp": {"Description": "\nYou have entered a pirate camp",
                         "Completed1": False}, 
               "Start": {"Description": "\nThis is where you washed up", 
                         "Actions": ["Start actions"], 
-                        "Completed1": False}, 
+                        "Completed1": True}, 
               "Trap": {"Description": "\nYou fall into a pit full of spikes", 
                        "Actions": ["Disable trap"], 
                        "Completed1": False}, 
@@ -105,19 +105,37 @@ def encounterActions(action, room):
             print("You beat the pirates")
     elif room == "Key":
         if action == "pick up the key":
-            Player["inventory"]["hasKey"] = True
-            #already picked up the key
-            Encounters["Key"]["Completed1"] = True
-            print("You have picked up the key")
+            if not Encounters["Key"]["Completed1"]:
+                Player["inventory"]["hasKey"] = True
+                #already picked up the key
+                Encounters["Key"]["Completed1"] = True
+                #change key description
+                Encounters["Key"]["Description"] = (
+                    "\nThis is where you found the key")
+                print("You have picked up the key")
+            else:
+                #if you repeat the option when it doesn't show up
+                print("You have already picked up the key")
+                print("There is no second key")
+                print("What are you trying to pick up?")
     elif room == "Patrol":
         if action == "fight the pirates":
             print("You beat the pirates")
     elif room == "Shovel":
         if action == "pick up the shovel":
-            Player["inventory"]["hasShovel"] = True
-            #already picked up shovel
-            Encounters["Shovel"]["Completed1"] = True
-            print("You have picked up the shovel")
+            if not Encounters["Shovel"]["Completed1"]:
+                Player["inventory"]["hasShovel"] = True
+                #already picked up shovel
+                Encounters["Shovel"]["Completed1"] = True
+                #change shovel description
+                Encounters["Shovel"]["Description"] = (
+                    "\nThis is where you found the shovel")
+                print("You have picked up the shovel")
+            else:
+                #if you repeat the option when it doesn't show up
+                print("You have already picked up the shovel")
+                print("There is no second shovel")
+                print("What are you trying to pick up?")
     elif room == "Start":
         pass
     elif room == "Trap":
@@ -132,6 +150,8 @@ def encounterActions(action, room):
                 if Player["inventory"]["hasShovel"]:
                     print("You have dug up the treasure")
                     Encounters["Treasure"]["Completed1"] = True
+                    Encounters["Treasure"]["Description"] = (
+                        "\nIt's a locked treasure chest")
                 else:
                     print("You do not have a shovel")
             else:
@@ -142,6 +162,8 @@ def encounterActions(action, room):
                     if Player["inventory"]["hasKey"]:
                         print("You have unlocked the treasure")
                         Encounters["Treasure"]["Completed2"] = True
+                        Encounters["Treasure"]["Description"] = (
+                            "\nIt's an unlocked treasure chest")
                     else:
                         print("You do not have a key")
                 else:
@@ -177,6 +199,7 @@ def mainMenu():
         playerLocation = islandMap[Player["posY"]][Player["posX"]]
         print(Encounters[playerLocation]["Description"])
         print("What do you do?")
+        #prints action as an option if action is not completed yet
         for action in range(len(Encounters[playerLocation]["Actions"])):
             if (not Encounters[playerLocation][f'Completed{action + 1}']):
                 print(f'-{Encounters[playerLocation]["Actions"][action]}')
