@@ -101,10 +101,10 @@ def encounterActions(action, room):
     #print(room)
     #print(action)
     if room == "Camp":
-        if action == "fight the pirates":
+        if action == "Fight the pirates":
             print("You beat the pirates")
     elif room == "Key":
-        if action == "pick up the key":
+        if action == "Pick up the key":
             if not Encounters["Key"]["Completed1"]:
                 Player["inventory"]["hasKey"] = True
                 #already picked up the key
@@ -119,10 +119,10 @@ def encounterActions(action, room):
                 print("There is no second key")
                 print("What are you trying to pick up?")
     elif room == "Patrol":
-        if action == "fight the pirates":
+        if action == "Fight the pirates":
             print("You beat the pirates")
     elif room == "Shovel":
-        if action == "pick up the shovel":
+        if action == "Pick up the shovel":
             if not Encounters["Shovel"]["Completed1"]:
                 Player["inventory"]["hasShovel"] = True
                 #already picked up shovel
@@ -139,11 +139,11 @@ def encounterActions(action, room):
     elif room == "Start":
         pass
     elif room == "Trap":
-        if action == "disable trap":
+        if action == "Disable trap":
             print("Trap disabled!")
             #how do I disable one trap without disabling the other?
     elif room == "Treasure":
-        if action == "dig":
+        if action == "Dig":
             #Completed1 checks if you have already dug 
             #Completed2 checks if you have already unlocked
             if not Encounters["Treasure"]["Completed1"]:
@@ -156,7 +156,7 @@ def encounterActions(action, room):
                     print("You do not have a shovel")
             else:
                 print("You have already dug up the treasure")
-        elif action == "unlock":
+        elif action == "Unlock":
             if Encounters["Treasure"]["Completed1"]:
                 if not Encounters["Treasure"]["Completed2"]:
                     if Player["inventory"]["hasKey"]:
@@ -171,7 +171,7 @@ def encounterActions(action, room):
             else:
                 print("You have not dug up the treasure yet")
     elif room == "Tree":
-        if action == "pick a coconut":
+        if action == "Pick a coconut":
             Player["inventory"]["coconuts"] += 1
             print(f'You have {Player["inventory"]["coconuts"]} coconuts')
 
@@ -205,17 +205,17 @@ def mainMenu():
                 print(f'-{Encounters[playerLocation]["Actions"][action]}')
         print("-Inventory\n-Move\n-Map\n-Quit")
         #takes user's choice
-        choice = input("-").lower()
-        if choice == "move":
+        choice = input("-").capitalize()
+        if choice == "Move":
             print("Okay!\n")
             move()
-        elif choice.capitalize() in Encounters[playerLocation]["Actions"]:
+        elif choice in Encounters[playerLocation]["Actions"]:
             encounterActions(choice, playerLocation)
-        elif choice == "inventory":
+        elif choice == "Inventory":
             printInv()
-        elif choice == "map":
+        elif choice == "Map":
             map.viewMap()
-        elif choice == "quit":
+        elif choice == "Quit":
             print("\nYou have quit your adventure")
             break
         else:
